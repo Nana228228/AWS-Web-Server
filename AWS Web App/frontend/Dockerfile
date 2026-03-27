@@ -1,16 +1,9 @@
-FROM node:18-alpine
+FROM nginx:alpine
 
-WORKDIR /app
+# Copia o arquivo de configuração para o lugar certo
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Instala as dependências
-COPY package*.json ./
-RUN npm install
+# Copia o seu index.html para a pasta que o Nginx serve
+COPY index.html /usr/share/nginx/html/index.html
 
-# Copia o código e compila a aplicação
-COPY . .
-RUN npm run build
-
-# Expõe a porta 8080 e inicia o Next.js
-EXPOSE 8080
-ENV PORT 8080
-CMD ["npm", "start"]
+EXPOSE 80
